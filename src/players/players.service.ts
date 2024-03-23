@@ -10,6 +10,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { log } from 'console';
+import { EditPlayerDTO } from './dtos/editPlayerDTO.dto';
 @Injectable()
 export class PlayersService {
   private players: Player[] = [];
@@ -35,7 +36,7 @@ export class PlayersService {
 
   async updatePlayer(
     id: string,
-    createPlayerDTO: CreatePlayerDTO,
+    editPlayerDTO: EditPlayerDTO,
   ): Promise<Player> {
     const playerFound = await this.playerModel.findOne({ _id: id });
 
@@ -45,28 +46,9 @@ export class PlayersService {
 
     return await this.playerModel.findOneAndUpdate(
       { _id: id },
-      { $set: createPlayerDTO },
+      { $set: editPlayerDTO },
     );
   }
-
-  // const { name, email, phone } = createPlayerDTO;
-
-  // const player: Player = {
-  //   _id: uuidv4(),
-  //   name,
-  //   email,
-  //   phone,
-  //   ranking: 'A',
-  //   posicaoRanking: 1,
-  //   urlPhoto: '',
-  // };
-
-  // this.players.push(player);
-
-  // private async update(createPlayerDTO: CreatePlayerDTO): Promise<Player> {
-  //   console.log('service', createPlayerDTO);
-
-  // }
 
   async getPlayers(): Promise<Player[]> {
     return await this.playerModel.find().exec();
@@ -81,13 +63,13 @@ export class PlayersService {
   }
 
   async deletePlayer(id: string): Promise<void> {
-    // const playerFound = await this.playerModel.findOne({ email: email });
+    const playerFound = await this.playerModel.findOne({ _id: id });
 
-    // if (!playerFound) {
-    //   throw new NotFoundException(`Jogador "${email} não foi encontrado"`);
-    // }
+    if (!playerFound) {
+      throw new NotFoundException(`Jogador "${id} não foi encontrado"`);
+    }
 
     await this.playerModel.findOneAndDelete({ _id: id });
-    // await this.playerModel.findOneAndDelete({ email: playerFound.email });
+    // await this.playerModel.findOneAndDelete({ id: playerFound.email });
   }
 }
