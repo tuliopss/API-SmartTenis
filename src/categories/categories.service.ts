@@ -7,7 +7,7 @@ import { Model } from 'mongoose';
 @Injectable()
 export class CategoriesService {
   constructor(
-    @InjectModel('Category') private readonly categoryModel: Model<Category>,
+    @InjectModel('category') private readonly categoryModel: Model<Category>,
   ) {}
 
   async createCategory(
@@ -20,10 +20,14 @@ export class CategoriesService {
     });
 
     if (categoryFound) {
-      throw new BadRequestException(`Category already registred`);
+      throw new BadRequestException(`Category ${category} already registred`);
     }
 
     const categoryCreated = new this.categoryModel(createCategoryDTO);
     return await categoryCreated.save();
+  }
+
+  async getCategories(): Promise<Array<Category>> {
+    return await this.categoryModel.find();
   }
 }
