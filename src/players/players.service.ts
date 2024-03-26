@@ -8,7 +8,7 @@ import {
 import { Player } from './interfaces/Player.interface';
 import { v4 as uuidv4 } from 'uuid';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { isValidObjectId, Model } from 'mongoose';
 import { log } from 'console';
 import { EditPlayerDTO } from './dtos/editPlayerDTO.dto';
 @Injectable()
@@ -55,9 +55,12 @@ export class PlayersService {
   }
 
   async getPlayerById(id: string): Promise<Player> {
+    if (!isValidObjectId(id)) {
+      throw new NotFoundException(`Invalid ID`);
+    }
     const playerFound = await this.playerModel.findOne({ _id: id });
     if (!playerFound) {
-      throw new NotFoundException(`Jogador "${id} não foi encontrado"`);
+      throw new NotFoundException(`Player "${id} not found"`);
     }
     return playerFound;
   }
