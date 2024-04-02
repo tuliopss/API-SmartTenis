@@ -12,6 +12,7 @@ import { CreateCategoryDTO } from './dtos/CreateCategoryDTO.dto';
 import { Category } from './interfaces/category.interface';
 import { CategoriesService } from './categories.service';
 import { EditCategoryDTO } from './dtos/EditCategoryDTO.dto';
+import { Player } from 'src/players/interfaces/Player.interface';
 
 @Controller('api/categories')
 export class CategoriesController {
@@ -49,5 +50,10 @@ export class CategoriesController {
   @Post('/:category/players/:playerID')
   async assignPlayerCategory(@Param() params: string[]): Promise<void> {
     return await this.categoryService.assignPlayerCategory(params);
+  }
+
+  @Get('/getPlayerCategory/:idPlayer')
+  async getPlayerCategory(@Param('idPlayer') idPlayer: any): Promise<Category> {
+    return await this.categoryService.getPlayerCategory(idPlayer);
   }
 }

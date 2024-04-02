@@ -13,7 +13,6 @@ import { log } from 'console';
 import { EditPlayerDTO } from './dtos/editPlayerDTO.dto';
 @Injectable()
 export class PlayersService {
-  private players: Player[] = [];
   private readonly logger = new Logger(PlayersService.name);
 
   constructor(

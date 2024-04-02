@@ -5,6 +5,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { EditCategoryDTO } from './dtos/EditCategoryDTO.dto';
 import { PlayersService } from 'src/players/players.service';
+import { Player } from 'src/players/interfaces/Player.interface';
 
 @Injectable()
 export class CategoriesService {
@@ -98,5 +99,22 @@ export class CategoriesService {
       { category: category },
       { $set: categoryFound },
     );
+  }
+
+  async getPlayerCategory(idPlayer: any): Promise<Category> {
+    const player = await this.playersService.getPlayerById(idPlayer);
+
+    const playerCategory = await this.categoryModel
+      .findOne()
+      .where('players')
+      .in(idPlayer);
+
+    if (!playerCategory) {
+      throw new BadRequestException(
+        `Player ${idPlayer} isn't registred in a category`,
+      );
+    }
+
+    return playerCategory;
   }
 }
