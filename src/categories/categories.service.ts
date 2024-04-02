@@ -102,7 +102,7 @@ export class CategoriesService {
   }
 
   async getPlayerCategory(idPlayer: any): Promise<Category> {
-    const player = await this.playersService.getPlayerById(idPlayer);
+    await this.playersService.getPlayerById(idPlayer);
 
     const playerCategory = await this.categoryModel
       .findOne()

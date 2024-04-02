@@ -9,6 +9,7 @@ export const ChallengeSchema = new mongoose.Schema(
     players: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Player' }],
 
     match: { type: mongoose.Schema.Types.ObjectId, ref: 'Match' },
+    status: { type: String },
   },
   { timestamps: true, collection: 'challenges' },
 );

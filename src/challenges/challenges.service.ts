@@ -5,6 +5,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Challenge } from './interfaces/challenge.interface';
 import { Model } from 'mongoose';
 import { CategoriesService } from 'src/categories/categories.service';
+import { ChallengeStatus } from './enums/challengeStatus.enum';
 
 @Injectable()
 export class ChallengesService {
@@ -40,10 +41,21 @@ export class ChallengesService {
       throw new BadRequestException(`Requester must be a match player`);
     }
 
-    // const playerCategory = await this.categoriesService.getCategoryById(
-    //   createChallengeDTO.requester,
-    // );
+    const playerCategory = await this.categoriesService.getPlayerCategory(
+      createChallengeDTO.requester,
+    );
 
-    return;
+    if (!playerCategory) {
+      throw new BadRequestException(
+        `Requester must be registred in a category`,
+      );
+    }
+
+    const challengeCreated = new this.challengeModel(createChallengeDTO);
+    challengeCreated.category = playerCategory.category;
+    challengeCreated.dateHourRequest = new Date();
+
+    challengeCreated.status = ChallengeStatus.PENDING;
+    return await challengeCreated.save();
   }
 }
