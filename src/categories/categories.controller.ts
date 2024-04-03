@@ -13,6 +13,7 @@ import { Category } from './interfaces/category.interface';
 import { CategoriesService } from './categories.service';
 import { EditCategoryDTO } from './dtos/EditCategoryDTO.dto';
 import { Player } from 'src/players/interfaces/Player.interface';
+import { UpdateChallengeDTO } from 'src/challenges/dtos/updateChallenge.dto';
 
 @Controller('api/categories')
 export class CategoriesController {
