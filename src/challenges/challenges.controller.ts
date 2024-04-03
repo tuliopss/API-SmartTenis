@@ -13,6 +13,7 @@ import { CreateChallengeDTO } from './dtos/CreateChallenge.dto';
 import { Challenge } from './interfaces/challenge.interface';
 import { UpdateChallengeDTO } from './dtos/updateChallenge.dto';
 import { ChallengeValidationPipe } from './pipes/challengeValidationsPipe.pipe';
+import { AssignChallengeMatchDTO } from 'src/players/dtos/assignChallengeMatchDTO.dto';
 
 @Controller('api/challenges')
 export class ChallengesController {
@@ -46,5 +47,16 @@ export class ChallengesController {
     console.log(`controller`);
 
     return await this.challengesService.updateChallenge(id, updateChallengeDTO);
+  }
+
+  @Post('/:idChallenge/match')
+  async assignChallengeMatch(
+    @Body(ValidationPipe) assignChallengeMatchDTO: AssignChallengeMatchDTO,
+    @Param('idChallenge') idChallenge: string,
+  ) {
+    return await this.challengesService.AssignChallengeMatch(
+      idChallenge,
+      assignChallengeMatchDTO,
+    );
   }
 }
